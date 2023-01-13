@@ -13,6 +13,9 @@
     "default_popup": "index.html",
     "default_title": "Link 2 Markdown"
   },
+  "background": {
+    "service_worker": "scripts/contextMenuServiceWorker.js"
+  },
   "permissions": [
     "contextMenus",
     "tabs",
