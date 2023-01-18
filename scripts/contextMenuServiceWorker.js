@@ -13,12 +13,11 @@ const sendMessage = (content) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0]?.id
 
-
     chrome.tabs.sendMessage(
       activeTab,
       { message: 'inject', content },
       (response) => {
-        console.log(response)
+        // console.log(response)
         if (response?.status === 'failed') {
           console.log('injection failed.')
         }
@@ -65,8 +64,8 @@ const generateCompletionAction = async (info) => {
     `
     const baseCompletion = await generate(`${basePromptPrefix}${selectionText}`)
 
-    console.log(baseCompletion.text)
-    // sendMessage(baseCompletion.text)
+    // console.log(baseCompletion.text)
+    sendMessage(baseCompletion.text)
     // Add your second prompt here
     const secondPrompt = `
       Take the table of contents and title of the blog post below and generate a blog post written in the style of Paul Graham. Make it feel like a story. Don't just list the points. Go deep into each one. Explain why.
@@ -89,6 +88,7 @@ const generateCompletionAction = async (info) => {
 
 
 chrome.runtime.onInstalled.addListener(() => {
+
   chrome.contextMenus.create({
     id: 'context-run',
     title: 'Select your title',
