@@ -23,9 +23,11 @@ const getTags = () => {
 
 
 const getUrl = () => {
-  hrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-    let url = tabs[0].url
-    console.log(url)
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+      console.log(tabs[0].url)
+      resolve(tabs[0].url)
+    })
   })
 }
 
@@ -49,7 +51,7 @@ const sendMessage = (content) => {
 const generate = async (prompt) => {
   // Get your API key from storage
   const key = await getKey()
-  getUrl()
+
 
   // console.log(chrome.storage.local.get(['openai-tags']))
   const url = 'https://api.openai.com/v1/completions'
@@ -76,7 +78,7 @@ const generate = async (prompt) => {
 
 const generateCompletionAction = async (info) => {
   try {
-
+    const myUrl = await getUrl()
     // Send message with generating text (this will be like a loading indicator)
     sendMessage('generating...')
 
@@ -88,7 +90,7 @@ const generateCompletionAction = async (info) => {
 
     const basePromptPrefix = `
     convert the link below to markdown link.
-    Link:
+    Link: ${myUrl}
     `
 
     const baseCompletion = await generate(`${basePromptPrefix}${selectionText}`)
@@ -96,9 +98,6 @@ const generateCompletionAction = async (info) => {
     // console.log(baseCompletion.text)
     sendMessage(baseCompletion.text)
     // Add your second prompt here
-    // const title =  baseCompletion.text.slice(0, ']')
-
-    // let str = baseCompletion.text;
 
     let title = baseCompletion.text.match(/\[(.*?)\]/)
 
@@ -106,7 +105,7 @@ const generateCompletionAction = async (info) => {
     const secondPrompt = `
       Take the Title, Tag and Link below and generate a short description.
 
-      Link: ${info}
+      Link: ${myUrl}
       Title: ${title}
 
       Tag: ${tags}
