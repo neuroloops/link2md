@@ -51,6 +51,10 @@ checkForKey().then((response) => {
     document.getElementById('key_entered').style.display = 'block'
   }
   checkForTags().then((response) => {
+    if (response !== 'undefined') {
+      console.log('no tag')
+      return
+    }
     console.log('tag:', response)
   })
 })
@@ -63,7 +67,8 @@ const setTags = () => {
   if (input) {
     const { value } = input
 
-    console.log(value)
+    const valueArr = new Array(value)
+    console.log(valueArr)
 
     // Save to google storage
     chrome.storage.local.set({ 'link2md-tag': value }, () => { })

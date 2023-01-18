@@ -11,7 +11,7 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_title": "Link2.Md"
+    "default_title": "Highlight a text to add it the the description"
   },
   "background": {
     "service_worker": "scripts/contextMenuServiceWorker.js"

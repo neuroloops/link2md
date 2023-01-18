@@ -73,19 +73,22 @@ const generate = async (prompt) => {
 
   // Select the top choice and send back
   const completion = await completionResponse.json()
+  console.log(completion)
   return completion.choices.pop()
 }
 
 const generateCompletionAction = async (info) => {
   try {
-    const myUrl = await getUrl()
-    // Send message with generating text (this will be like a loading indicator)
+    console.log('l81')
     sendMessage('generating...')
 
-    const tags = await getTags()
-    sendMessage(tags)
-
+    const myUrl = await getUrl()
     const { selectionText } = info
+    const tags = await getTags()
+    // const tags = new Array(await getTags())
+
+    // Send message with generating text (this will be like a loading indicator)
+
 
 
     const basePromptPrefix = `
@@ -93,29 +96,32 @@ const generateCompletionAction = async (info) => {
     Link: ${myUrl}
     `
 
-    const baseCompletion = await generate(`${basePromptPrefix}${selectionText}`)
+    const baseCompletion = await generate(`${basePromptPrefix}`)
 
-    // console.log(baseCompletion.text)
+    console.log(baseCompletion.text)
     sendMessage(baseCompletion.text)
     // Add your second prompt here
 
     let title = baseCompletion.text.match(/\[(.*?)\]/)
 
     console.log(tags)
+    console.log(selectionText)
+
     const secondPrompt = `
-      Take the Title, Tag and Link below and generate a short description.
+      Take the Title, Url, Tags and Selection  below to generate a short description: 
 
-      Link: ${myUrl}
+      Url: ${myUrl}
+      Tags: ${tags}
       Title: ${title}
-
-      Tag: ${tags}
+      Selection: ${selectionText}
 
       `
+    // Link: ${myUrl}
 
-    // Description: ${baseCompletion.text}
     // Let's see what we get!
     const secondPromptCompletion = await generate(secondPrompt)
     // Send the output when we're all done
+    console.log(secondPromptCompletion.text)
     sendMessage(secondPromptCompletion.text)
   } catch (error) {
     console.log(error)
