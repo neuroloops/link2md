@@ -108,11 +108,11 @@ const generateCompletionAction = async (info) => {
     console.log(selectionText)
 
     const secondPrompt = `
-      Take the Title, Url, Tags and Selection  below to generate a short description: 
+      Take the Title, Url, Tags and Selection below to generate a short description:
 
+      Title: ${title}
       Url: ${myUrl}
       Tags: ${tags}
-      Title: ${title}
       Selection: ${selectionText}
 
       `
@@ -122,7 +122,16 @@ const generateCompletionAction = async (info) => {
     const secondPromptCompletion = await generate(secondPrompt)
     // Send the output when we're all done
     console.log(secondPromptCompletion.text)
+
+
+    // todo split each word from comma
+    const tagArr = new Array(tags)
+
     sendMessage(secondPromptCompletion.text)
+    tagArr.map((item) => {
+
+      sendMessage('#' + item)
+    })
   } catch (error) {
     console.log(error)
   }
