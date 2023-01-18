@@ -1,6 +1,6 @@
 {
-  "name": "Link 2 Markdown",
-  "description": "Make link in md with its description!",
+  "name": "Link2.Md",
+  "description": "Make link in markdown with custom tags!",
   "version": "1.0",
   "manifest_version": 3,
   "icons": {
@@ -11,7 +11,7 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_title": "Link 2 Markdown"
+    "default_title": "Link2.Md"
   },
   "background": {
     "service_worker": "scripts/contextMenuServiceWorker.js"

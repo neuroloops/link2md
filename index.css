@@ -1,7 +1,20 @@
 body {
-  min-width: 250px;
+  min-width: 150px;
+  text-align: center;
 }
+input{
+  margin-bottom: 7px;
+}
+
+#key_needed{
+
+}
+
 
 #key_entered {
   display: none;
+}
+
+button{
+  /* background-color: brown; */
 }
