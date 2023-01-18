@@ -15,6 +15,7 @@ const getTags = () => {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(['link2md-tag'], (result) => {
       if (result['link2md-tag']) {
+        console.log(result['link2md-tag'])
         resolve(result['link2md-tag'])
       }
     })
@@ -79,12 +80,13 @@ const generate = async (prompt) => {
 
 const generateCompletionAction = async (info) => {
   try {
-    console.log('l81')
+
     sendMessage('generating...')
 
     const myUrl = await getUrl()
     const { selectionText } = info
     const tags = await getTags()
+    console.log(tags)
     // const tags = new Array(await getTags())
 
     // Send message with generating text (this will be like a loading indicator)
@@ -104,9 +106,6 @@ const generateCompletionAction = async (info) => {
 
     let title = baseCompletion.text.match(/\[(.*?)\]/)
 
-    console.log(tags)
-    console.log(selectionText)
-
     const secondPrompt = `
       Take the Title, Url, Tags and Selection below to generate a short description:
 
@@ -121,17 +120,18 @@ const generateCompletionAction = async (info) => {
     // Let's see what we get!
     const secondPromptCompletion = await generate(secondPrompt)
     // Send the output when we're all done
+    // const hashTags = []
+    // tags[0].map((item) => {
+    //   hashTags.push('#' + item)
+    //   sendMessage('#' + item)
+    // })
+
     console.log(secondPromptCompletion.text)
-
-
-    // todo split each word from comma
-    const tagArr = new Array(tags)
-
     sendMessage(secondPromptCompletion.text)
-    tagArr.map((item) => {
 
-      sendMessage('#' + item)
-    })
+    console.log(tags)
+    sendMessage(tags)
+
   } catch (error) {
     console.log(error)
   }

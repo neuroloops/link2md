@@ -13,7 +13,15 @@ const insert = (content) => {
   pToRemove?.remove()
 
   // Split content by \n
-  const splitContent = content.split('\n')
+  console.log(content)
+  let splitContent = ''
+
+  if (typeof content === 'object') {
+    splitContent = content.join(',')
+  }
+  console.log(typeof content)
+  console.log(splitContent)
+  splitContent = content?.split('\n')
 
   // Wrap in p tags
   splitContent.forEach((content) => {

@@ -66,12 +66,13 @@ const setTags = () => {
   const input = document.getElementById('tags_input')
   if (input) {
     const { value } = input
+    const hashTags = value.split(',').map(item => '#' + item.trim()).join(',')
 
-    const valueArr = new Array(value)
-    console.log(valueArr)
-
+    console.log(value)
+    console.log(hashTags)
+    debugger
     // Save to google storage
-    chrome.storage.local.set({ 'link2md-tag': value }, () => { })
+    chrome.storage.local.set({ 'link2md-tag': hashTags })
   }
 }
 
