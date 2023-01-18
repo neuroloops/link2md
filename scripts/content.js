@@ -10,7 +10,7 @@ const insert = (content) => {
 
   // Grab the first p tag so we can replace it with our injection
   const pToRemove = element.childNodes[1]
-  pToRemove.remove()
+  pToRemove?.remove()
 
   // Split content by \n
   const splitContent = content.split('\n')

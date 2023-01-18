@@ -1,11 +1,31 @@
+
+
 const getKey = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get(['openai-key'], (result) => {
-      if (result['openai-key']) {
-        const decodedKey = atob(result['openai-key'])
+    chrome.storage.local.get(['link2md-key'], (result) => {
+      if (result['link2md-key']) {
+        const decodedKey = atob(result['link2md-key'])
         resolve(decodedKey)
       }
     })
+  })
+}
+
+const getTags = () => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(['link2md-tag'], (result) => {
+      if (result['link2md-tag']) {
+        resolve(result['link2md-tag'])
+      }
+    })
+  })
+}
+
+
+const getUrl = () => {
+  hrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+    let url = tabs[0].url
+    console.log(url)
   })
 }
 
@@ -29,6 +49,9 @@ const sendMessage = (content) => {
 const generate = async (prompt) => {
   // Get your API key from storage
   const key = await getKey()
+  getUrl()
+
+  // console.log(chrome.storage.local.get(['openai-tags']))
   const url = 'https://api.openai.com/v1/completions'
 
   // Call completions endpoint
@@ -53,30 +76,44 @@ const generate = async (prompt) => {
 
 const generateCompletionAction = async (info) => {
   try {
+
     // Send message with generating text (this will be like a loading indicator)
     sendMessage('generating...')
+
+    const tags = await getTags()
+    sendMessage(tags)
+
     const { selectionText } = info
 
 
     const basePromptPrefix = `
-    Write me a detailed table of contents for a blog post with the title below.
-    Title:
+    convert the link below to markdown link.
+    Link:
     `
+
     const baseCompletion = await generate(`${basePromptPrefix}${selectionText}`)
 
     // console.log(baseCompletion.text)
     sendMessage(baseCompletion.text)
     // Add your second prompt here
+    // const title =  baseCompletion.text.slice(0, ']')
+
+    // let str = baseCompletion.text;
+
+    let title = baseCompletion.text.match(/\[(.*?)\]/)
+
+    console.log(tags)
     const secondPrompt = `
-      Take the table of contents and title of the blog post below and generate a blog post written in the style of Paul Graham. Make it feel like a story. Don't just list the points. Go deep into each one. Explain why.
+      Take the Title, Tag and Link below and generate a short description.
 
-      Title: ${selectionText}
+      Link: ${info}
+      Title: ${title}
 
-      Table of Contents: ${baseCompletion.text}
+      Tag: ${tags}
 
-      Blog Post:
       `
 
+    // Description: ${baseCompletion.text}
     // Let's see what we get!
     const secondPromptCompletion = await generate(secondPrompt)
     // Send the output when we're all done

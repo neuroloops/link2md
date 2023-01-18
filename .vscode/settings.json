@@ -1,3 +1,6 @@
 {
-  "vscode-edge-devtools.webhint": false
+  "vscode-edge-devtools.webhint": false,
+  "cSpell.words": [
+    "openai"
+  ]
 }

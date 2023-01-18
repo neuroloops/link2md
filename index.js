@@ -1,11 +1,18 @@
 const checkForKey = () => {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get(['openai-key'], (result) => {
-      resolve(result['openai-key'])
+    chrome.storage.local.get(['link2md-key'], (result) => {
+      resolve(result['link2md-key'])
     })
   })
 }
 
+const checkForTags = () => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(['link2md-tags'], (result) => {
+      resolve(result['link2md-tags'])
+    })
+  })
+}
 
 const encode = (input) => {
   return btoa(input)
@@ -21,7 +28,7 @@ const saveKey = () => {
     const encodedValue = encode(value)
 
     // Save to google storage
-    chrome.storage.local.set({ 'openai-key': encodedValue }, () => {
+    chrome.storage.local.set({ 'link2md-key': encodedValue }, () => {
       document.getElementById('key_needed').style.display = 'none'
       document.getElementById('key_entered').style.display = 'block'
     })
@@ -43,10 +50,30 @@ checkForKey().then((response) => {
     document.getElementById('key_needed').style.display = 'none'
     document.getElementById('key_entered').style.display = 'block'
   }
+  checkForTags().then((response) => {
+    console.log('tag:', response)
+  })
 })
 
 
+
+const setTags = () => {
+
+  const input = document.getElementById('tags_input')
+  if (input) {
+    const { value } = input
+
+    console.log(value)
+
+    // Save to google storage
+    chrome.storage.local.set({ 'link2md-tag': value }, () => { })
+  }
+}
+
 document.getElementById('save_key_button').addEventListener('click', saveKey)
+
 document
   .getElementById('change_key_button')
   .addEventListener('click', changeKey)
+
+document.getElementById('generate_button').addEventListener('click', setTags)
