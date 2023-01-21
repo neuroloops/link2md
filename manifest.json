@@ -3,36 +3,57 @@
   "description": "Make link in markdown with custom tags!",
   "version": "1.0",
   "manifest_version": 3,
+  "host_permissions": [
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "scripts/serviceWorker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "scripts/content.js"
+      ],
+      "css": [
+        "content.css"
+      ]
+    }
+  ],
   "icons": {
     "48": "assets/t2md_48.png",
     "72": "assets/t2md_72.png",
     "96": "assets/t2md_96.png",
     "144": "assets/t2md_144.png"
   },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/t2md_48.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
   "action": {
     "default_popup": "index.html",
     "default_title": "Highlight a text to add it the the description"
   },
-  "background": {
-    "service_worker": "scripts/contextMenuServiceWorker.js"
-  },
-  "host_permissions": [
-    "https://*/*"
-  ],
   "permissions": [
     "contextMenus",
     "tabs",
-    "storage"
+    "storage",
+    "scripting"
   ],
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "scripts/content.js"
-      ]
+  "commands": {
+    "bark": {
+      "suggested_key": {
+        "default": "Alt+Shift+3"
+      },
+      "description": "Makes Acho bark the title at the bottom right of the current page."
     }
-  ]
+  }
 }

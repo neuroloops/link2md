@@ -68,9 +68,6 @@ const setTags = () => {
     const { value } = input
     const hashTags = value.split(',').map(item => '#' + item.trim()).join(',')
 
-    console.log(value)
-    console.log(hashTags)
-    debugger
     // Save to google storage
     chrome.storage.local.set({ 'link2md-tag': hashTags })
   }

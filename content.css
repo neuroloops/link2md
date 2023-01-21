@@ -1,0 +1,41 @@
+.overlay {
+  z-index: 9999;
+  position: fixed;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+.content {
+  width: 400px;
+  height: 400px;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.acho-notification {
+  /* background-color: black; */
+  border: rgb(242, 105, 77) 1px solid;
+  font-size: medium;
+  margin: 0 auto;
+  border-radius: 5px;
+
+  padding: 8px;
+
+  width: 400px;
+  height: 400px;
+  /* top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; */
+  background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+.acho-notification>img {
+  margin-right: 12px;
+}
