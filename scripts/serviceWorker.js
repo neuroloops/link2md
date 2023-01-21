@@ -29,13 +29,13 @@ const getUrl = () => {
   })
 }
 
-const sendMessage = (content) => {
+const sendMessage = (content, type) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0]?.id
 
     chrome.tabs.sendMessage(
       activeTab,
-      { message: 'inject', content },
+      { message: type, content },
       (response) => {
         // console.log(response)
         if (response?.status === 'failed') {
@@ -75,87 +75,85 @@ const generate = async (prompt) => {
   return completion.choices.pop()
 }
 
-function barkTitle() {
-  const query = { active: true, currentWindow: true }
-  chrome.tabs.query(query, (tabs) => {
-    chrome.tabs.sendMessage(tabs[0].id, {
-      tabTitle: tabs[0].title
-    })
-  })
-}
 
 
 const generateCompletionAction = async (info) => {
   // getTags()
   // createDiv()
 
-  // try {
+  try {
 
-  //   sendMessage('generating...')
+    sendMessage('generating...')
 
-  //   const myUrl = await getUrl()
-  //   const { selectionText } = info
-  //   const tags = await getTags()
-  //   console.log(tags)
-  //   // const tags = new Array(await getTags())
+    const myUrl = await getUrl()
+    const { selectionText } = info
+    const tags = await getTags()
+    console.log(tags)
+    // const tags = new Array(await getTags())
 
-  //   // Send message with generating text (this will be like a loading indicator)
-
-
-
-  //   const basePromptPrefix = `
-  //   convert the link below to markdown link.
-  //   Link: ${myUrl}
-  //   `
-
-  //   const baseCompletion = await generate(`${basePromptPrefix}`)
-
-  //   console.log(baseCompletion.text)
-  //   sendMessage(baseCompletion.text)
-  //   // Add your second prompt here
-
-  //   let title = baseCompletion.text.match(/\[(.*?)\]/)
-
-  //   const secondPrompt = `
-  //     Take the Title, Url, Tags and Selection below to generate a short description:
-
-  //     Title: ${title}
-  //     Url: ${baseCompletion.text}
-  //     Tags: ${tags}
-  //     Selection: ${selectionText}
-
-  //     `
+    // Send message with generating text (this will be like a loading indicator)
 
 
-  //   // Let's see what we get!
-  //   const secondPromptCompletion = await generate(secondPrompt)
 
-  //   // Send the output when we're all done
+    const basePromptPrefix = `
+    convert the link below to markdown link.
+    Link: ${myUrl}
+    `
+
+    const baseCompletion = await generate(`${basePromptPrefix}`)
+
+    console.log(baseCompletion.text)
+    sendMessage(baseCompletion.text, 'link')
+    // Add your second prompt here
+
+    let title = baseCompletion.text.match(/\[(.*?)\]/)
+
+    const secondPrompt = `
+      Take the Title, Url, Tags and Selection below to generate a short description:
+
+      Title: ${title}
+      Url: ${baseCompletion.text}
+      Tags: ${tags}
+      Selection: ${selectionText}
+
+      `
 
 
-  //   console.log(secondPromptCompletion.text)
-  //   sendMessage(secondPromptCompletion.text)
+    // Let's see what we get!
+    const secondPromptCompletion = await generate(secondPrompt)
 
-  //   console.log(tags)
-  //   sendMessage(tags)
-  // } catch (error) {
-  //   console.log(error)
-  // }
+    // Send the output when we're all done
+
+
+    console.log(secondPromptCompletion.text)
+    sendMessage(secondPromptCompletion.text, 'text')
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 
-// chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(() => {
 
-//   chrome.contextMenus.create({
-//     id: 'context-run',
-//     title: 'Select your title',
-//     contexts: ['selection'],
-//   })
-// })
+  chrome.contextMenus.create({
+    id: 'context-run',
+    title: 'Select your title',
+    contexts: ['selection'],
+  })
+})
 
 // Add listener
 chrome.contextMenus.onClicked.addListener(generateCompletionAction)
 
+function barkTitle() {
+  const query = { active: true, currentWindow: true }
+  chrome.tabs.query(query, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      tabTitle: baseCompletion.text
+    })
+  })
+}
 
 
 chrome.commands.onCommand.addListener(function (command) {
