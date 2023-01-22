@@ -18,7 +18,7 @@
         "scripts/content.js"
       ],
       "css": [
-        "content.css"
+        "css/content.css"
       ]
     }
   ],

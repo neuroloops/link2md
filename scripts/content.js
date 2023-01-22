@@ -69,15 +69,15 @@ chrome.runtime.onMessage.addListener(
 
 // Notification body.
 const overlay = document.createElement("div")
-overlay.className = 'overlay'
+overlay.className = 'link2md-overlay'
 
 const content = document.createElement("div")
-content.className = 'content'
+content.className = 'link2md-content'
 
 overlay.appendChild(content)
 
 const header = document.createElement('div')
-header.className = 'header'
+header.className = 'link2md-header'
 content.appendChild(header)
 
 
@@ -86,27 +86,31 @@ icon.src = chrome.runtime.getURL("assets/t2md_48.png")
 
 header.appendChild(icon)
 
-const title = document.createElement('h2')
-title.className = 'title'
-title.innerHTML = "Write your tag, separated by a comma"
+const title = document.createElement('p')
+title.className = 'link2md-title'
+title.innerHTML = "Link2.md"
 header.appendChild(title)
 
-const tagInput = document.createElement('input')
-tagInput.className = "tagInput"
-content.appendChild(tagInput)
+const whitespace = document.createElement('p')
+whitespace.className = 'link2md-whitespace'
+whitespace.innerHTML = " "
+header.appendChild(whitespace)
+// const tagInput = document.createElement('input')
+// tagInput.className = "tagInput"
+// content.appendChild(tagInput)
 
-const tagBtn = document.createElement('button')
-tagBtn.innerHTML = "generate"
-tagBtn.className = "tagBtn"
-content.appendChild(tagBtn)
+// const tagBtn = document.createElement('button')
+// tagBtn.innerHTML = "generate"
+// tagBtn.className = "tagBtn"
+// content.appendChild(tagBtn)
 
 // Notification text.
 const link = document.createElement('p')
-link.className = 'link'
+link.className = 'link2md-link'
 content.appendChild(link)
 
 const text = document.createElement('p')
-text.className = 'text'
+text.className = 'link2md-text'
 content.appendChild(text)
 
 // Add to current page.
@@ -114,9 +118,9 @@ document.body.appendChild(overlay)
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log(request)
-  const overlay = document.getElementsByClassName('overlay')[0]
-  const link = content.getElementsByClassName('link')[0]
-  const text = content.getElementsByClassName('text')[0]
+  const overlay = document.getElementsByClassName('link2md-overlay')[0]
+  const link = content.getElementsByClassName('link2md-link')[0]
+  const text = content.getElementsByClassName('link2md-text')[0]
 
   if (request.message == 'link') {
     link.innerHTML = request.content

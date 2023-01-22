@@ -15,6 +15,8 @@ const getTags = () => {
       if (result['link2md-tag']) {
         console.log(result['link2md-tag'])
         resolve(result['link2md-tag'])
+      } else {
+        resolve(result[''])
       }
     })
   })
@@ -83,7 +85,7 @@ const generateCompletionAction = async (info) => {
 
   try {
 
-    sendMessage('generating...')
+    sendMessage('generating...', '')
 
     const myUrl = await getUrl()
     const { selectionText } = info

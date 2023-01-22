@@ -1,20 +1,20 @@
 body {
   min-width: 150px;
+  min-height: 0;
   text-align: center;
 }
-input{
+
+input {
   margin: 7px;
 }
 
-#key_needed{
-
-}
+#key_needed {}
 
 
 #key_entered {
   display: none;
 }
 
-button{
+button {
   /* background-color: brown; */
 }
